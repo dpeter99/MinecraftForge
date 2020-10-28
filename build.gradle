@@ -472,7 +472,29 @@ project(':forge') {
     def changelog = rootProject.file('build/changelog.txt')
     if (changelog.exists())
         extraTxts += changelog
-    
+
+    task printVersion {
+
+
+        // any code that goes here is part of configuring the task
+        // this code will always get run, even if the task is not executed
+        doLast { // add a task action
+
+            def json = [
+                version: project.version
+            ]
+
+            def thingy = new JsonBuilder(json).toPrettyString()
+
+            def output = new File('forge_version.json').write(thingy)
+            //output.write(thingy)
+
+            // any code that goes here is part of executing the task
+            // this code will only get run if and when the task gets executed
+            println thingy
+        }
+    }
+
 	task crowdin(type: CrowdinTask) {
 		key = project.hasProperty('crowdinKey') ? project.crowdinKey : null
 		//TODO: Merge our english.json?
